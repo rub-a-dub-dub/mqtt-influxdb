@@ -55,6 +55,8 @@ def setupLogging():
     logging.basicConfig(format='%(asctime)s %(message)s')
     if parserArgs.logfile is not None:
         logging.basicConfig(filename=parserArgs.logfile, level=verbosityLevel)
+    else:
+        logging.basicConfig(level=verbosityLevel)
 
 def setupSigInt():
     '''Sets up our Ctrl + C handler'''
@@ -106,6 +108,7 @@ def sendToDB(payload):
     jsonData = json.dumps([writeData])
     try:
         dbConn.write_points(jsonData)
+        logging.debug("Wrote " + jsonData + "to InfluxDB.")
     except Exception as e:
         stopMQTT()
         stopInfluxDB()
