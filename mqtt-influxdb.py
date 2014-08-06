@@ -42,6 +42,7 @@ def _sigIntHandler(signum, frame):
     logging.info("Received Ctrl+C. Exiting.")
     stopMQTT()
     stopInfluxDB()
+    exit(0)
 
 def setupLogging():
     '''Sets up logging'''
@@ -103,18 +104,12 @@ def sendToDB(payload):
     writeData["columns"] = [parserArgs.dbcolname]
 
     jsonData = json.dumps([writeData])
-    print jsonData
     try:
-        dbConn.query(jsonData)
-    except InfluxDBClientError as e:
+        dbConn.write_points(jsonData)
+    except Exception as e:
         stopMQTT()
         stopInfluxDB()
-        logging.critical("Couldn't write to InfluxDB: " + e.content)
-        exit(1)
-    except:
-        stopMQTT()
-        stopInfluxDB()
-        logging.critical("Couldn't write to InfluxDB.")
+        logging.critical("Couldn't write to InfluxDB: " + e.message)
         exit(1)
 
 def startInfluxDB():
