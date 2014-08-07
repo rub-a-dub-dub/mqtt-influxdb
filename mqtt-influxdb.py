@@ -98,8 +98,10 @@ def sendToDB(payload):
     global parserArgs
     writeData = dict()
     try:
-        writeData["points"] = [[int(payload[:-2])]]
+        # first assume we have an int
+        writeData["points"] = [[int(float(payload))]] 
     except ValueError:
+        # okay, just store it as a string
         writeData["points"] = [[payload]]
     writeData["name"] = parserArgs.dbseries
     writeData["columns"] = [parserArgs.dbcolname]
