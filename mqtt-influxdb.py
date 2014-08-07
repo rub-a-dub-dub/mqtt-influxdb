@@ -52,11 +52,10 @@ def setupLogging():
     else:
         verbosityLevel = parserArgs.v
     verbosityLevel = (5 - verbosityLevel)*10
-    logging.basicConfig(format='%(asctime)s %(message)s')
     if parserArgs.logfile is not None:
-        logging.basicConfig(filename=parserArgs.logfile, level=verbosityLevel)
+        logging.basicConfig(filename=parserArgs.logfile, level=verbosityLevel, format='%(asctime)s %(message)s')
     else:
-        logging.basicConfig(level=verbosityLevel)
+        logging.basicConfig(level=verbosityLevel, format='%(asctime)s %(message)s')
 
 def setupSigInt():
     '''Sets up our Ctrl + C handler'''
