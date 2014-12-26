@@ -111,10 +111,7 @@ def sendToDB(payload):
         dbConn.write_points(jsonData)
         logging.debug("Wrote " + jsonData + "to InfluxDB.")
     except Exception as e:
-        stopMQTT()
-        stopInfluxDB()
         logging.critical("Couldn't write to InfluxDB: " + e.message)
-        exit(1)
 
 def startInfluxDB():
     '''This function sets up our InfluxDB connection'''
