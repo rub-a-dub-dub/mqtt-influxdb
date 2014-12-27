@@ -111,7 +111,10 @@ def sendToDB(payload):
         dbConn.write_points(jsonData)
         logging.debug("Wrote " + jsonData + "to InfluxDB.")
     except Exception as e:
-        logging.critical("Couldn't write to InfluxDB: " + e.message)
+        try:
+            logging.critical("Couldn't write to InfluxDB: " + e.message)
+        except TypeError as e2:
+            logging.critical("Couldn't write to InfluxDB.")
 
 def startInfluxDB():
     '''This function sets up our InfluxDB connection'''
